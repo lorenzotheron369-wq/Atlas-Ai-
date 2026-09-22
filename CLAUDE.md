@@ -2,8 +2,8 @@
 
 ## Context
 Atlas is a personal Spanish-learning app for one learner, Lorenzo.
-Lorenzo is not a programmer and cannot review code. Every rule below
-exists because of that.
+He is a complete beginner (zero Spanish). He is not a programmer and
+cannot review code. Every rule below exists because of that.
 
 ## Hard rules
 - Everything lives in ONE file: atlas-lesson-001.html.
@@ -12,16 +12,35 @@ exists because of that.
 - Never put API keys, tokens or secrets in any file.
 - Make the smallest change that completes the task. Do not rewrite,
   reformat, rename or restyle code the task does not require touching.
-- All existing screens must keep working exactly as before.
+- Existing screens must keep working unless the task says to change them.
 - Keep the existing visual design: use the CSS variables in :root and
   the existing component styles (.frame, .cta, .chip, .note, etc.).
-- No streaks, XP, points, badges or leaderboards.
-- Spanish is Castilian (es-ES). Do not write new Spanish sentences
-  unless the task explicitly asks for it. If you add any Spanish at all,
-  list every new Spanish string at the end of your reply so a native
-  speaker can check it.
-- Storage must go through the existing `store` helper and must still
-  work when storage is unavailable.
+- No streaks, XP, points, badges or leaderboards. A 14-day completion
+  grid is allowed, but it must never show a streak count or a
+  "broken" state.
+
+## Language rules
+- Spanish is MEXICAN Spanish (es-MX). Use the polite "usted" form when
+  speaking to service staff (waiters, shop staff, reception).
+- Do not write new Spanish unless the task gives it to you word for
+  word. If you add or change ANY Spanish, list every Spanish string at
+  the end of your reply so a native Mexican speaker can check it.
+
+## Beginner rules
+- Never show a Spanish word before it has been taught, unless the task
+  marks it as new, and then show its English meaning next to it.
+- In lesson 001, every Spanish line on screen shows its English meaning.
+- All interface text (buttons, headings, instructions, labels) is in
+  plain English. Spanish appears only as learning content.
+- Every screen tells the learner, in one short sentence, what to do now.
+- The learner must always be able to get back to the home screen.
+
+## Storage
+- Storage must go through the `store` helper (which uses
+  window.storage, then localStorage, then memory). Never call
+  localStorage or window.storage directly anywhere else.
+
+## Saving work
 - Do not commit or push anything. Lorenzo makes his own save-point
   after he has tested the change.
 

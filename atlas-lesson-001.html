@@ -1,0 +1,1369 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Atlas · Español 001</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=IBM+Plex+Sans:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --ink:#0A0E13;
+    --ink-2:#111822;
+    --ink-3:#18212D;
+    --line:#25313F;
+    --brass:#C9A55C;
+    --brass-dim:#7E6A3C;
+    --paper:#E9E5DA;
+    --muted:#7E8C9C;
+    --jade:#4FB08D;
+    --coral:#D8695E;
+    --stage:min(560px, 100%);
+    --serif:"Instrument Serif", Georgia, serif;
+    --sans:"IBM Plex Sans", system-ui, -apple-system, sans-serif;
+    --mono:"IBM Plex Mono", ui-monospace, monospace;
+  }
+
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{
+    background:
+      radial-gradient(120% 80% at 50% -10%, #16202C 0%, transparent 60%),
+      var(--ink);
+    color:var(--paper);
+    font-family:var(--sans);
+    font-weight:300;
+    -webkit-font-smoothing:antialiased;
+    min-height:100vh;
+  }
+
+  .shell{
+    width:var(--stage);
+    margin:0 auto;
+    padding:22px 20px 96px;
+    display:flex;
+    flex-direction:column;
+    min-height:100vh;
+  }
+
+  /* ---------- masthead ---------- */
+  .masthead{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:18px}
+  .wordmark{font-family:var(--serif);font-size:26px;letter-spacing:.04em;color:var(--paper);cursor:pointer}
+  .wordmark .dot{color:var(--brass)}
+  .meta{font-family:var(--mono);font-size:10px;letter-spacing:.16em;color:var(--muted);text-transform:uppercase}
+
+  /* ---------- signature: the latitude rail ---------- */
+  .rail{margin-bottom:30px}
+  .rail-track{position:relative;height:26px}
+  .rail-line{position:absolute;top:12px;left:0;right:0;height:1px;background:var(--line)}
+  .rail-fill{position:absolute;top:12px;left:0;height:1px;background:var(--brass);width:0;transition:width .6s cubic-bezier(.4,0,.2,1)}
+  .tick{position:absolute;top:6px;width:1px;height:13px;background:var(--line);transform:translateX(-.5px)}
+  .tick.done{background:var(--brass-dim)}
+  .marker{position:absolute;top:6px;width:7px;height:13px;border:1px solid var(--brass);background:var(--ink);transform:translateX(-3.5px);transition:left .6s cubic-bezier(.4,0,.2,1)}
+  .rail-labels{display:flex;justify-content:space-between;margin-top:8px}
+  .rail-labels span{font-family:var(--mono);font-size:9px;letter-spacing:.12em;color:#4A5765;text-transform:uppercase}
+  .rail-labels span.now{color:var(--brass)}
+
+  /* ---------- stage ---------- */
+  .stage{flex:1;display:flex;flex-direction:column;justify-content:center}
+  .panel{animation:rise .45s cubic-bezier(.2,.7,.3,1)}
+  @keyframes rise{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+
+  .eyebrow{font-family:var(--mono);font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--brass);margin-bottom:14px}
+  h1{font-family:var(--serif);font-weight:400;font-size:40px;line-height:1.08;margin:0 0 14px}
+  h2{font-family:var(--serif);font-weight:400;font-size:29px;line-height:1.15;margin:0 0 10px}
+  p{font-size:15px;line-height:1.6;color:#B9C2CC;margin:0 0 14px}
+  .dim{color:var(--muted);font-size:13px;line-height:1.55}
+
+  /* ---------- the frame (signature component) ---------- */
+  .frame{
+    border:1px solid var(--line);
+    background:linear-gradient(180deg,var(--ink-2),var(--ink));
+    padding:26px 22px;
+    position:relative;
+  }
+  .frame::before,.frame::after{
+    content:"";position:absolute;width:9px;height:9px;border:1px solid var(--brass-dim);
+  }
+  .frame::before{top:-1px;left:-1px;border-right:0;border-bottom:0}
+  .frame::after{bottom:-1px;right:-1px;border-left:0;border-top:0}
+
+  .es{font-family:var(--serif);font-size:31px;line-height:1.25;color:var(--paper)}
+  .es .slot{
+    display:inline-block;min-width:96px;text-align:center;
+    color:var(--brass);border-bottom:1px solid var(--brass-dim);
+    padding:0 6px;
+  }
+  .es .slot.rolling{animation:roll .28s ease}
+  @keyframes roll{0%{opacity:0;transform:translateY(-8px)}100%{opacity:1;transform:none}}
+  .en{font-size:14px;color:var(--muted);margin-top:12px;font-style:italic}
+
+  /* ---------- controls ---------- */
+  .opts{display:flex;flex-wrap:wrap;gap:8px;margin-top:20px}
+  button{font-family:var(--sans);cursor:pointer;border-radius:0}
+  .chip{
+    background:var(--ink-2);border:1px solid var(--line);color:var(--paper);
+    padding:10px 14px;font-size:14px;font-weight:400;transition:border-color .15s,background .15s;
+  }
+  .chip:hover{border-color:var(--brass-dim);background:var(--ink-3)}
+  .chip.on{border-color:var(--brass);color:var(--brass)}
+
+  .cta{
+    width:100%;margin-top:26px;padding:16px;
+    background:var(--brass);border:0;color:#0A0E13;
+    font-size:14px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;
+    transition:filter .15s;
+  }
+  .cta:hover{filter:brightness(1.1)}
+  .cta.ghost{background:transparent;border:1px solid var(--line);color:var(--paper);font-weight:400}
+  .cta.ghost:hover{border-color:var(--brass-dim)}
+  .cta:disabled{opacity:.35;cursor:not-allowed}
+
+  .row{display:flex;gap:8px;margin-top:12px}
+  .row .cta{margin-top:0}
+
+  button:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--brass);outline-offset:2px}
+
+  /* ---------- audio line ---------- */
+  .line{
+    display:flex;gap:14px;align-items:flex-start;padding:13px 0;
+    border-bottom:1px solid rgba(37,49,63,.6);cursor:pointer;
+  }
+  .line:last-child{border-bottom:0}
+  .line .who{font-family:var(--mono);font-size:10px;letter-spacing:.1em;color:var(--brass-dim);padding-top:5px;width:34px;flex:none;text-transform:uppercase}
+  .line .txt{flex:1}
+  .line .txt .l-es{font-family:var(--serif);font-size:20px;line-height:1.35}
+  .line .txt .l-en{font-size:12.5px;color:var(--muted);margin-top:3px;display:none}
+  .line.open .txt .l-en{display:block}
+  .line .spk{color:var(--brass-dim);font-size:15px;padding-top:4px}
+  .line.playing .spk{color:var(--brass)}
+  .newtag{font-family:var(--mono);font-size:9px;letter-spacing:.1em;color:var(--brass-dim);text-transform:uppercase;margin-left:6px}
+
+  /* ---------- recall ---------- */
+  .prompt{font-size:19px;color:#B9C2CC;line-height:1.4}
+  .answer{font-family:var(--serif);font-size:30px;color:var(--brass);margin-top:16px;min-height:38px}
+
+  /* ---------- mirror ---------- */
+  .mic{
+    width:100%;padding:22px;background:var(--ink-2);border:1px solid var(--line);
+    color:var(--paper);font-size:14px;letter-spacing:.06em;text-transform:uppercase;margin-top:20px;
+  }
+  .mic.live{border-color:var(--coral);color:var(--coral);animation:pulse 1.4s infinite}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.55}}
+  .score{font-family:var(--mono);font-size:44px;color:var(--brass);line-height:1;margin-top:20px}
+  .heard{font-family:var(--mono);font-size:12px;color:var(--muted);margin-top:10px;word-break:break-word}
+  .miss{color:var(--coral)}
+  .hit{color:var(--jade)}
+
+  /* ---------- summary ---------- */
+  .stat{display:flex;justify-content:space-between;padding:11px 0;border-bottom:1px solid rgba(37,49,63,.6);font-size:14px}
+  .stat b{font-family:var(--mono);font-weight:500;color:var(--brass)}
+  .unlock{border:1px solid var(--brass-dim);padding:18px;margin-top:22px;background:rgba(201,165,92,.05)}
+  .unlock .k{font-family:var(--mono);font-size:10px;letter-spacing:.18em;color:var(--brass);text-transform:uppercase}
+  .unlock .v{font-family:var(--serif);font-size:23px;margin-top:7px}
+
+  .note{font-family:var(--mono);font-size:10.5px;line-height:1.6;color:#586675;margin-top:22px;letter-spacing:.02em}
+
+  /* ---------- home: 14-day grid ---------- */
+  .grid14{display:flex;gap:4px;margin-top:16px}
+  .grid14 .sq{flex:1;aspect-ratio:1;background:var(--ink-2);border:1px solid var(--line)}
+  .grid14 .sq.on{background:var(--brass);border-color:var(--brass)}
+
+  @media (max-width:420px){
+    h1{font-size:33px} .es{font-size:26px} h2{font-size:25px}
+  }
+  @media (prefers-reduced-motion:reduce){
+    *{animation:none !important;transition:none !important}
+  }
+</style>
+
+<div class="shell">
+  <div class="masthead">
+    <div class="wordmark" id="homeLink" role="button" tabindex="0">Atlas<span class="dot">.</span></div>
+    <div class="meta" id="metaLine"></div>
+    <div class="meta" id="exitBtn" role="button" tabindex="0" style="display:none;cursor:pointer">✕ Exit</div>
+  </div>
+
+  <div class="rail">
+    <div class="rail-track" id="railTrack">
+      <div class="rail-line"></div>
+      <div class="rail-fill" id="railFill"></div>
+      <div class="marker" id="marker" style="left:0"></div>
+    </div>
+    <div class="rail-labels" id="railLabels"></div>
+  </div>
+
+  <div class="stage" id="stage"></div>
+</div>
+
+<script>
+/* ============================================================
+   ATLAS · LESSON 001 — "Your first beer"
+   Single-file, no build step. Speech via Web Speech API.
+   ============================================================ */
+
+/* ---------- CONTENT ---------- */
+
+const LEARN = [
+  {emoji:'👋', es:'Hola', en:'Hello'},
+  {emoji:'🍺', es:'una cerveza', en:'a beer'},
+  {emoji:'💧', es:'agua', en:'water'},
+  {emoji:'🙏', es:'por favor', en:'please'},
+  {emoji:'😊', es:'gracias', en:'thank you'},
+  {emoji:'🧾', es:'la cuenta', en:'the bill'},
+  {emoji:'💰', es:'¿Cuánto es?', en:'How much is it?'},
+  {emoji:'🚻', es:'¿Dónde está el baño?', en:'Where is the bathroom?'}
+];
+
+const FRAMES = [
+  { id:'f1', es:'___, por favor.', en:'___, please.',
+    slots:[
+      {es:'una cerveza', en:'a beer'},
+      {es:'agua', en:'water'},
+      {es:'la cuenta', en:'the bill'}
+    ]},
+  { id:'f2', es:'¿Tiene ___?', en:'Do you have ___?',
+    slots:[
+      {es:'cerveza', en:'beer'},
+      {es:'agua', en:'water'}
+    ]}
+];
+
+const RECALL = [
+  {en:'A beer, please.',              es:'Una cerveza, por favor.'},
+  {en:'Water, please.',               es:'Agua, por favor.'},
+  {en:'The bill, please.',            es:'La cuenta, por favor.'},
+  {en:'How much is it?',              es:'¿Cuánto es?'},
+  {en:'Where is the bathroom?',       es:'¿Dónde está el baño?'},
+  {en:'Do you have beer?',            es:'¿Tiene cerveza?'}
+];
+
+const MIRROR = [
+  {es:'Una cerveza, por favor.', en:'A beer, please.'},
+  {es:'¿Cuánto es?',             en:'How much is it?'},
+  {es:'¿Dónde está el baño?',    en:'Where is the bathroom?'},
+  {es:'La cuenta, por favor.',   en:'The bill, please.'}
+];
+
+const SCENE = [
+  {who:'—',   es:'Hola.',                              en:'Hello.',                       isNew:false},
+  {who:'You', es:'Hola. Una cerveza, por favor.',       en:'Hello. A beer, please.',        isNew:false},
+  {who:'—',   es:'Sí. ¿Algo más?',                      en:'Yes. Anything else?',           isNew:true},
+  {who:'You', es:'Agua, por favor.',                    en:'Water, please.',                isNew:false},
+  {who:'—',   es:'¿Algo más?',                          en:'Anything else?',                isNew:true},
+  {who:'You', es:'No, gracias. La cuenta, por favor.',  en:'No, thanks. The bill, please.',  isNew:false},
+  {who:'—',   es:'Son cien pesos.',                     en:"That's a hundred pesos.",        isNew:true},
+  {who:'You', es:'Gracias. ¿Dónde está el baño?',       en:'Thanks. Where is the bathroom?', isNew:false},
+  {who:'—',   es:'Allá.',                               en:'Over there.',                   isNew:true}
+];
+
+const STAGES = ['Learn','Build','Recall','Speak','Listen'];
+
+/* ---------- STATE ---------- */
+const S = {
+  stage:0,
+  built:0,          // sentences constructed
+  recallScores:[],  // 0..2 self ratings
+  mirrorScores:[],  // 0..100
+  srs:{},           // itemId -> {due, ease, reps}
+  startedAt:Date.now()
+};
+
+/* ---------- STORAGE (graceful) ---------- */
+const store = {
+  mem:{},
+  async get(k){
+    if(window.storage){
+      try{ const r = await window.storage.get(k); return r ? JSON.parse(r.value) : null; }
+      catch(e){ return this.mem[k] ?? null; }
+    }
+    try{ const v = localStorage.getItem(k); return v ? JSON.parse(v) : null; }
+    catch(e){ return this.mem[k] ?? null; }
+  },
+  async set(k,v){
+    this.mem[k]=v;
+    if(window.storage){
+      try{ await window.storage.set(k, JSON.stringify(v)); }catch(e){}
+      return;
+    }
+    try{ localStorage.setItem(k, JSON.stringify(v)); }catch(e){}
+  }
+};
+
+/* ---------- DAYS / LESSON PROGRESS ---------- */
+function todayStr(){
+  const d = new Date();
+  const tz = d.getTimezoneOffset()*60000;
+  return new Date(d - tz).toISOString().slice(0,10);
+}
+function last14Days(){
+  const out = [];
+  for(let i=13;i>=0;i--){
+    const d = new Date();
+    d.setDate(d.getDate()-i);
+    const tz = d.getTimezoneOffset()*60000;
+    out.push(new Date(d - tz).toISOString().slice(0,10));
+  }
+  return out;
+}
+async function markDayDone(){
+  const days = (await store.get('atlas:es:days')) || [];
+  const t = todayStr();
+  if(!days.includes(t)){ days.push(t); await store.set('atlas:es:days', days); }
+  return days;
+}
+
+/* ---------- SPEECH OUT ---------- */
+let esVoice = null;
+let enVoice = null;
+function pickVoice(){
+  const vs = speechSynthesis.getVoices();
+  esVoice = vs.find(v=>v.lang==='es-MX') || vs.find(v=>v.lang==='es-US') || vs.find(v=>v.lang==='es-419') || vs.find(v=>v.lang.startsWith('es')) || null;
+}
+function pickEnVoice(){
+  const vs = speechSynthesis.getVoices();
+  enVoice = vs.find(v=>v.lang==='en-GB') || vs.find(v=>v.lang==='en-US') || vs.find(v=>v.lang.startsWith('en')) || null;
+}
+if('speechSynthesis' in window){
+  pickVoice(); pickEnVoice();
+  speechSynthesis.onvoiceschanged = ()=>{ pickVoice(); pickEnVoice(); };
+}
+
+function say(text, rate){
+  return new Promise(res=>{
+    if(!('speechSynthesis' in window)) return res();
+    speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance(text);
+    u.lang='es-MX'; u.rate = rate || 0.8;
+    if(esVoice) u.voice = esVoice;
+    u.onend = res; u.onerror = res;
+    speechSynthesis.speak(u);
+  });
+}
+
+/* English prompts for the audio drill — mirrors say(), separate voice/lang. */
+function sayEn(text){
+  return new Promise(res=>{
+    if(!('speechSynthesis' in window)) return res();
+    speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance(text);
+    u.lang='en-US';
+    if(enVoice) u.voice = enVoice;
+    u.onend = res; u.onerror = res;
+    speechSynthesis.speak(u);
+  });
+}
+
+/* ---------- SPEECH IN ---------- */
+const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+const canListen = !!SR;
+
+function listen(){
+  return new Promise((res,rej)=>{
+    let done = false;
+    const finish = (fn, val)=>{ if(done) return; done = true; clearTimeout(timer); fn(val); };
+    const timer = setTimeout(()=> finish(rej, 'timeout'), 6000);
+    let r;
+    try{ r = new SR(); }
+    catch(e){ finish(rej, 'error'); return; }
+    r.lang='es-MX'; r.interimResults=false; r.maxAlternatives=3; r.continuous=false;
+    let got=false;
+    r.onresult = e=>{
+      got=true;
+      const alts=[];
+      for(let i=0;i<e.results[0].length;i++) alts.push(e.results[0][i].transcript);
+      finish(res, alts);
+    };
+    r.onerror = e=> finish(rej, e.error||'error');
+    r.onend = ()=>{ if(!got) finish(rej, 'no-speech'); };
+    try{ r.start(); } catch(e){ finish(rej, 'error'); }
+  });
+}
+
+/* ---------- SCORING ----------
+   Honest: this is WORD RECOGNITION accuracy, not phoneme accuracy.
+   If the recogniser can't recover the word from your audio, that is
+   real signal — but it is not a phonetician's score. Labelled as such. */
+function norm(s){
+  return s.toLowerCase()
+    .normalize('NFD').replace(/[̀-ͯ]/g,'')
+    .replace(/[¿?¡!.,;:]/g,'')
+    .replace(/\s+/g,' ').trim();
+}
+function scoreAttempt(target, alts){
+  const t = norm(target).split(' ');
+  let best = {pct:0, marks:t.map(w=>({w,hit:false})), heard:alts[0]||''};
+  for(const alt of alts){
+    const h = norm(alt).split(' ');
+    const pool = h.slice();
+    const marks = t.map(w=>{
+      const i = pool.findIndex(x=> x===w || near(x,w));
+      if(i>-1){ pool.splice(i,1); return {w,hit:true}; }
+      return {w,hit:false};
+    });
+    const pct = Math.round(100*marks.filter(m=>m.hit).length/t.length);
+    if(pct>best.pct) best = {pct, marks, heard:alt};
+  }
+  return best;
+}
+function near(a,b){ // tolerate 1 edit on words >3 chars
+  if(Math.abs(a.length-b.length)>1) return false;
+  if(a.length<4) return false;
+  let i=0,j=0,e=0;
+  while(i<a.length&&j<b.length){
+    if(a[i]===b[j]){i++;j++;continue}
+    if(++e>1) return false;
+    if(a.length>b.length) i++; else if(b.length>a.length) j++; else {i++;j++}
+  }
+  return e + (a.length-i) + (b.length-j) <= 1;
+}
+
+/* ---------- SRS (SM-2 lite) ---------- */
+function schedule(id, quality){ // quality 0=again 1=hard 2=good
+  const now = Date.now(), day = 864e5;
+  const prev = S.srs[id] || {reps:0, ease:2.5, interval:0};
+  let {reps, ease, interval} = prev;
+  if(quality===0){ reps=0; interval=0; ease=Math.max(1.3, ease-0.2); }
+  else{
+    reps++;
+    ease = Math.max(1.3, ease + (quality===2 ? 0.1 : -0.15));
+    interval = reps===1 ? 1 : reps===2 ? 3 : Math.round(interval*ease);
+  }
+  S.srs[id] = {reps, ease, interval, due: now + Math.max(interval,0.006)*day};
+  return S.srs[id];
+}
+function dueLabel(ms){
+  const d = (ms - Date.now())/864e5;
+  if(d < 0.5) return 'later today';
+  if(d < 1.5) return 'tomorrow';
+  return 'in ' + Math.round(d) + ' days';
+}
+function duePhrases(){
+  const now = Date.now();
+  const seen = new Set(), list = [];
+  Object.entries(S.srs).forEach(([k,v])=>{
+    if(v.due>now) return;
+    const phrase = k.slice(2);
+    if(seen.has(phrase)) return;
+    seen.add(phrase);
+    list.push(phrase);
+  });
+  return list;
+}
+function lookupEnglish(es){
+  const r = RECALL.find(x=>x.es===es); if(r) return r.en;
+  const m = MIRROR.find(x=>x.es===es); if(m) return m.en;
+  const l = LEARN.find(x=>x.es===es); if(l) return l.en;
+  return '';
+}
+function pruneStaleSrs(){
+  const validR = new Set(RECALL.map(r=>r.es));
+  const validM = new Set(MIRROR.map(m=>m.es));
+  Object.keys(S.srs).forEach(k=>{
+    const prefix = k.slice(0,2);
+    const phrase = k.slice(2);
+    const valid = prefix==='r:' ? validR.has(phrase) : prefix==='m:' ? validM.has(phrase) : false;
+    if(!valid) delete S.srs[k];
+  });
+}
+
+/* ---------- RAIL ---------- */
+function drawRail(){
+  const labels = document.getElementById('railLabels');
+  const track = document.getElementById('railTrack');
+  labels.innerHTML = STAGES.map((s,i)=>`<span class="${i===S.stage?'now':''}">${s}</span>`).join('');
+  track.querySelectorAll('.tick').forEach(t=>t.remove());
+  STAGES.forEach((_,i)=>{
+    const t = document.createElement('div');
+    t.className = 'tick' + (i<=S.stage?' done':'');
+    t.style.left = (i/(STAGES.length-1)*100)+'%';
+    track.appendChild(t);
+  });
+  const pct = S.stage/(STAGES.length-1)*100;
+  document.getElementById('railFill').style.width = pct+'%';
+  document.getElementById('marker').style.left = pct+'%';
+}
+function setRailVisible(v){
+  const r = document.querySelector('.rail');
+  if(r) r.style.display = v ? '' : 'none';
+}
+function setSessionMode(active){
+  const meta = document.getElementById('metaLine');
+  const exit = document.getElementById('exitBtn');
+  if(meta) meta.style.display = active ? 'none' : '';
+  if(exit) exit.style.display = active ? '' : 'none';
+}
+function goHome(){
+  if(pista && !pista.stopped) pistaStop();
+  S.built=0; S.recallScores=[]; S.mirrorScores=[]; S.startedAt=Date.now();
+  screenHome();
+}
+
+/* ---------- RENDER HELPERS ---------- */
+const stageEl = document.getElementById('stage');
+function render(html){
+  stageEl.innerHTML = `<div class="panel">${html}</div>`;
+  drawRail();
+  window.scrollTo({top:0,behavior:'instant'});
+}
+function go(n, fn){ S.stage=n; fn(); }
+
+const homeLinkEl = document.getElementById('homeLink');
+if(homeLinkEl){
+  homeLinkEl.onclick = ()=> goHome();
+  homeLinkEl.onkeydown = e=>{ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); goHome(); } };
+}
+const exitBtnEl = document.getElementById('exitBtn');
+if(exitBtnEl){
+  const doExit = ()=>{
+    if(confirm("Leave now? Progress in this lesson won't be saved.")) goHome();
+  };
+  exitBtnEl.onclick = doExit;
+  exitBtnEl.onkeydown = e=>{ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); doExit(); } };
+}
+
+/* ============================================================
+   HOME — "Today"
+   ============================================================ */
+let reviewDoneNote = false;
+async function screenHome(){
+  setRailVisible(false);
+  setSessionMode(false);
+  const days = (await store.get('atlas:es:days')) || [];
+  const lessons = (await store.get('atlas:es:lessons')) || {};
+  const l1 = lessons['001'] || {done:false};
+  const last14 = last14Days();
+  const filledCount = last14.filter(d=>days.includes(d)).length;
+  const due = duePhrases().slice(0,20);
+  const reviewN = due.length;
+  const reviewM = Math.max(1, Math.ceil(reviewN/3));
+  const todayDone = days.includes(todayStr());
+  const note = reviewDoneNote;
+  reviewDoneNote = false;
+
+  render(`
+    ${note ? `<div class="note" style="margin-top:0">Review done.</div>` : ''}
+    <h1>Today</h1>
+    <div class="grid14">
+      ${last14.map(d=>`<div class="sq ${days.includes(d)?'on':''}"></div>`).join('')}
+    </div>
+    <div class="dim" style="margin-top:8px">${filledCount} of the last 14 days</div>
+
+    ${reviewN ? `
+    <div class="frame" style="margin-top:20px">
+      <div class="eyebrow" style="margin-bottom:8px">Review · ${reviewN} phrase${reviewN===1?'':'s'} · about ${reviewM} min</div>
+      <p class="dim" style="margin:0">Do this first. It's what makes words stick.</p>
+      <button class="cta" id="startReview" style="margin-top:16px">Start review</button>
+    </div>` : ''}
+
+    <div class="frame" style="margin-top:16px">
+      <div class="eyebrow" style="margin-bottom:8px">Lesson 001 · Your first beer</div>
+      <p class="dim" style="margin:0">${l1.done ? 'Done ✓ · practise again anytime' : 'Not started'}</p>
+      <button class="cta ${reviewN?'ghost':''}" id="startLesson" style="margin-top:16px">${l1.done?'Practise again':'Start lesson'}</button>
+    </div>
+
+    <div class="frame" style="margin-top:16px;opacity:.45">
+      <div class="eyebrow" style="margin-bottom:8px">Lesson 002 · Coming soon</div>
+    </div>
+
+    ${l1.done ? `
+    <div class="frame" style="margin-top:16px">
+      <div class="eyebrow" style="margin-bottom:8px">Audio drill · hands-free</div>
+      <p class="dim" style="margin:0">Your phone asks, you answer out loud, then you hear the right answer. No tapping needed.</p>
+      <button class="cta ghost" id="startDrill" style="margin-top:16px">Start audio drill</button>
+    </div>` : ''}
+
+    ${(!reviewN && todayDone) ? `<p class="dim" style="margin-top:20px">You're done for today. Come back tomorrow for your review.</p>` : ''}
+  `);
+
+  const reviewBtn = document.getElementById('startReview');
+  if(reviewBtn) reviewBtn.onclick = ()=> screenReview(duePhrases().slice(0,20));
+  document.getElementById('startLesson').onclick = ()=>{
+    S.built=0; S.recallScores=[]; S.mirrorScores=[]; S.startedAt=Date.now();
+    screenIntro();
+  };
+  const drillBtn = document.getElementById('startDrill');
+  if(drillBtn) drillBtn.onclick = ()=> screenPistaStart();
+}
+
+/* ============================================================
+   SCREEN — INTRO (entry point for the lesson, reached from Home)
+   ============================================================ */
+function screenIntro(){
+  S.stage = 0;
+  setRailVisible(true);
+  setSessionMode(true);
+  render(`
+    <div class="eyebrow">Lesson 001 · about 15 min</div>
+    <h1>Your first beer</h1>
+    <p>By the end of this lesson you can order a beer, ask the price, pay, and find the bathroom in Spanish.</p>
+    <p class="dim">You'll learn 8 words and phrases, then combine them into sentences. No experience needed.</p>
+    <button class="cta" id="begin">Start</button>
+  `);
+  document.getElementById('begin').onclick = ()=>{ say('Vamos.'); go(0, screenLearn); };
+}
+
+/* ============================================================
+   STEP 1 — LEARN
+   ============================================================ */
+let learnIdx = 0;
+function screenLearn(){
+  S.stage = 0;
+  setRailVisible(true);
+  setSessionMode(true);
+  learnIdx = 0;
+  paintLearn();
+}
+function paintLearn(){
+  const item = LEARN[learnIdx];
+  render(`
+    <div class="eyebrow">Step 1 of 5 · Learn the words · ${learnIdx+1} of ${LEARN.length}</div>
+    <p class="dim">Listen, then say it out loud.</p>
+    <div class="frame" style="text-align:center;padding:40px 22px">
+      <div style="font-size:56px;margin-bottom:14px">${item.emoji}</div>
+      <div class="es">${item.es}</div>
+      <div class="en" style="margin-top:10px">${item.en}</div>
+    </div>
+    <div class="row">
+      <button class="cta ghost" id="hearAgain">Hear it again</button>
+      <button class="cta" id="next">Next</button>
+    </div>
+  `);
+  document.getElementById('hearAgain').onclick = ()=> say(item.es);
+  document.getElementById('next').onclick = ()=>{
+    learnIdx++;
+    if(learnIdx < LEARN.length) paintLearn(); else go(1, screenBuild);
+  };
+  say(item.es);
+}
+
+/* ============================================================
+   STEP 2 — BUILD
+   ============================================================ */
+let bIdx = 0, bSlot = 0;
+function screenBuild(){
+  S.stage = 1;
+  setRailVisible(true);
+  setSessionMode(true);
+  bIdx = 0; bSlot = 0;
+  paintFrame();
+}
+function paintFrame(){
+  const f = FRAMES[bIdx];
+  const slot = f.slots[bSlot];
+  const esHtml = f.es.replace('___', `<span class="slot" id="slotEl">${slot.es}</span>`);
+  const enHtml = f.en.replace('___', slot.en);
+
+  render(`
+    <div class="eyebrow">Step 2 of 5 · Build sentences · Pattern ${bIdx+1} of ${FRAMES.length}</div>
+    <p class="dim">Tap a word to swap it in. The pattern stays the same.</p>
+    <div class="frame">
+      <div class="es">${esHtml}</div>
+      <div class="en" id="enLine">${enHtml}</div>
+    </div>
+    <div class="opts" id="opts">
+      ${f.slots.map((s,i)=>`<button class="chip ${i===bSlot?'on':''}" data-i="${i}">${s.es}</button>`).join('')}
+    </div>
+    ${bIdx===1 ? `<div class="note">Tiene = do you have. It's the polite form you use with waiters.</div>` : ''}
+    <div class="row">
+      <button class="cta ghost" id="hear">Hear it</button>
+      <button class="cta" id="nextFrame">${bIdx===FRAMES.length-1?'Next':'Next pattern'}</button>
+    </div>
+    <div class="note">Two patterns, five sentences. That's how you build a language.</div>
+  `);
+
+  document.querySelectorAll('#opts .chip').forEach(c=>{
+    c.onclick = ()=>{
+      bSlot = +c.dataset.i; S.built++;
+      const f2 = FRAMES[bIdx], s2 = f2.slots[bSlot];
+      const el = document.getElementById('slotEl');
+      el.textContent = s2.es;
+      el.classList.remove('rolling'); void el.offsetWidth; el.classList.add('rolling');
+      document.getElementById('enLine').textContent = f2.en.replace('___', s2.en);
+      document.querySelectorAll('#opts .chip').forEach(x=>x.classList.toggle('on', x===c));
+      say(f2.es.replace('___', s2.es));
+    };
+  });
+
+  document.getElementById('hear').onclick = ()=>{
+    const f2 = FRAMES[bIdx];
+    say(f2.es.replace('___', f2.slots[bSlot].es));
+  };
+  document.getElementById('nextFrame').onclick = ()=>{
+    if(bIdx === FRAMES.length-1){ go(2, screenRecall); }
+    else { bIdx++; bSlot=0; S.built++; paintFrame(); }
+  };
+  say(FRAMES[bIdx].es.replace('___', FRAMES[bIdx].slots[bSlot].es));
+}
+
+/* ============================================================
+   STEP 3 — RECALL
+   ============================================================ */
+let rIdx = 0;
+function screenRecall(){
+  S.stage = 2;
+  setRailVisible(true);
+  setSessionMode(true);
+  rIdx = 0; paintRecall();
+}
+function paintRecall(){
+  const item = RECALL[rIdx];
+  render(`
+    <div class="eyebrow">Step 3 of 5 · Recall · ${rIdx+1} of ${RECALL.length}</div>
+    <h2 style="font-size:22px;color:#B9C2CC;font-family:var(--sans);font-weight:300">Say this in Spanish</h2>
+    <div class="frame">
+      <div class="prompt">${item.en}</div>
+      <div class="answer" id="ans">· · ·</div>
+    </div>
+    <button class="cta" id="reveal">Show answer</button>
+    <div id="rate"></div>
+    <div class="note">Say it in Spanish out loud first, then tap "Show answer".</div>
+  `);
+  document.getElementById('reveal').onclick = ()=>{
+    document.getElementById('ans').textContent = item.es;
+    say(item.es);
+    document.getElementById('reveal').style.display='none';
+    document.getElementById('rate').innerHTML = `
+      <div class="row">
+        <button class="cta ghost" data-q="0">Didn't know it</button>
+        <button class="cta ghost" data-q="1">Hard</button>
+        <button class="cta" data-q="2">Knew it</button>
+      </div>`;
+    document.querySelectorAll('#rate button').forEach(b=>{
+      b.onclick = ()=>{
+        schedule('r:'+item.es, +b.dataset.q);
+        S.recallScores.push(+b.dataset.q);
+        rIdx++;
+        if(rIdx < RECALL.length) paintRecall(); else go(3, screenMirror);
+      };
+    });
+  };
+}
+
+/* ============================================================
+   STEP 4 — SPEAK
+   ============================================================ */
+let mIdx = 0;
+function screenMirror(){
+  S.stage = 3;
+  setRailVisible(true);
+  setSessionMode(true);
+  mIdx = 0; paintMirror();
+}
+function paintMirror(){
+  const target = MIRROR[mIdx];
+  render(`
+    <div class="eyebrow">Step 4 of 5 · Speak · ${mIdx+1} of ${MIRROR.length}</div>
+    <h2 style="font-size:22px;color:#B9C2CC;font-family:var(--sans);font-weight:300">Repeat after me</h2>
+    <div class="frame">
+      <div class="es">${target.es}</div>
+      <div class="en" id="fb">${target.en}</div>
+    </div>
+    <button class="cta ghost" id="hear2" style="margin-top:14px">Hear it again</button>
+    ${canListen
+      ? `<button class="mic" id="mic">🎙 Tap, then speak</button>
+         <div class="note" style="margin-top:16px">Tap the mic and say the sentence out loud. You'll see which words came through — that's feedback, not a grade. Tap "Next" afterward to continue no matter the result.</div>`
+      : `<div class="note" style="margin-top:16px">Speech recognition isn't available in this browser. Say it out loud anyway, then tap one of the two buttons below to rate yourself and continue.</div>
+         <div class="row"><button class="cta ghost" id="selfBad">Struggled</button><button class="cta" id="selfGood">Nailed it</button></div>`}
+    <div id="result"></div>
+  `);
+  document.getElementById('hear2').onclick = ()=> say(target.es, .7);
+  say(target.es, .7);
+
+  if(canListen){
+    const mic = document.getElementById('mic');
+    mic.onclick = async ()=>{
+      mic.classList.add('live'); mic.textContent = '● Listening…';
+      try{
+        const alts = await listen();
+        const res = scoreAttempt(target.es, alts);
+        S.mirrorScores.push(res.pct);
+        schedule('m:'+target.es, res.pct>=85?2:res.pct>=55?1:0);
+        showResult(res, target);
+      }catch(err){
+        mic.classList.remove('live'); mic.textContent = '🎙 Try again';
+        document.getElementById('result').innerHTML = `
+          <div class="note" style="color:var(--coral)">${err==='not-allowed'
+            ? 'Microphone blocked. Allow mic access in your browser, then tap again — or just rate yourself below.'
+            : err==='timeout'
+            ? "Didn't hear anything after a few seconds — the microphone might not work here. Rate yourself below instead."
+            : 'Nothing came through. Get closer to the mic and tap again — or just rate yourself below.'}</div>
+          <div class="row">
+            <button class="cta ghost" id="selfBad">Struggled</button>
+            <button class="cta" id="selfGood">Nailed it</button>
+          </div>`;
+        document.getElementById('selfBad').onclick = ()=>{ S.mirrorScores.push(50); schedule('m:'+target.es,0); advanceMirror(); };
+        document.getElementById('selfGood').onclick = ()=>{ S.mirrorScores.push(90); schedule('m:'+target.es,2); advanceMirror(); };
+      }
+    };
+  } else {
+    document.getElementById('selfBad').onclick = ()=>{ S.mirrorScores.push(50); schedule('m:'+target.es,0); advanceMirror(); };
+    document.getElementById('selfGood').onclick = ()=>{ S.mirrorScores.push(90); schedule('m:'+target.es,2); advanceMirror(); };
+  }
+}
+function showResult(res, target){
+  const mic = document.getElementById('mic');
+  mic.classList.remove('live'); mic.textContent = '🎙 Try again';
+  const missed = res.marks.filter(m=>!m.hit).map(m=>m.w);
+  const verdict = res.pct>=85 ? 'Clean. Move on.'
+    : res.pct>=55 ? 'Understandable. Tighten it up.'
+    : 'Slow down and hit each syllable.';
+  document.getElementById('result').innerHTML = `
+    <div class="score">${res.pct}<span style="font-size:18px;color:var(--muted)">% word match</span></div>
+    <div class="heard">${res.marks.map(m=>`<span class="${m.hit?'hit':'miss'}">${m.w}</span>`).join(' ')}</div>
+    ${missed.length ? `<div class="note" style="margin-top:8px">Didn't come through: <span class="miss">${missed.join(', ')}</span>. ${verdict}</div>`
+                    : `<div class="note" style="margin-top:8px">${verdict}</div>`}
+    <button class="cta" id="mNext" style="margin-top:16px">${mIdx===MIRROR.length-1?'Finish':'Next'}</button>
+    <div class="note">This measures which words the recogniser recovered — not phoneme accuracy. Missing words are real signal; a high number is not a certificate.</div>
+  `;
+  document.getElementById('mNext').onclick = advanceMirror;
+}
+function advanceMirror(){
+  mIdx++;
+  if(mIdx < MIRROR.length) paintMirror(); else go(4, screenListen);
+}
+
+/* ============================================================
+   STEP 5 — LISTEN
+   ============================================================ */
+function screenListen(){
+  S.stage = 4;
+  setRailVisible(true);
+  setSessionMode(true);
+  render(`
+    <div class="eyebrow">Step 5 of 5 · Listen</div>
+    <h2>A bar in Mexico City</h2>
+    <p class="dim">You know almost every word here. Press Play all and follow along.</p>
+    <div class="frame" style="padding:8px 20px" id="scene">
+      ${SCENE.map((l,i)=>`
+        <div class="line open" data-i="${i}" tabindex="0" role="button">
+          <div class="who">${l.who}</div>
+          <div class="txt">
+            <div class="l-es">${l.es}${l.isNew?'<span class="newtag">New</span>':''}</div>
+            <div class="l-en">${l.en}</div>
+          </div>
+          <div class="spk">▶</div>
+        </div>`).join('')}
+    </div>
+    <div class="row">
+      <button class="cta ghost" id="playAll">Play all</button>
+      <button class="cta" id="next">Next</button>
+    </div>
+  `);
+
+  document.querySelectorAll('.line').forEach(el=>{
+    const act = async ()=>{
+      el.classList.add('playing');
+      await say(SCENE[+el.dataset.i].es);
+      el.classList.remove('playing');
+    };
+    el.onclick = act;
+    el.onkeydown = e=>{ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); act(); } };
+  });
+
+  document.getElementById('playAll').onclick = async ()=>{
+    for(const el of document.querySelectorAll('.line')){
+      el.classList.add('playing');
+      await say(SCENE[+el.dataset.i].es);
+      el.classList.remove('playing');
+      await new Promise(r=>setTimeout(r,260));
+    }
+  };
+  document.getElementById('next').onclick = ()=> go(4, screenSummary);
+}
+
+/* ============================================================
+   LESSON COMPLETE
+   ============================================================ */
+async function screenSummary(){
+  setSessionMode(false);
+  const mins = Math.max(1, Math.round((Date.now()-S.startedAt)/60000));
+  const solid = S.recallScores.filter(q=>q===2).length;
+  const clearSpeak = S.mirrorScores.filter(p=>p>=85).length;
+  const avgM = S.mirrorScores.length ? Math.round(S.mirrorScores.reduce((a,b)=>a+b,0)/S.mirrorScores.length) : 0;
+  const items = Object.entries(S.srs).sort((a,b)=>a[1].due-b[1].due);
+  const tomorrow = items.filter(([,v])=> (v.due-Date.now())/864e5 < 1.5);
+  const tmrN = tomorrow.length;
+  const tmrM = Math.max(1, Math.ceil(tmrN/3));
+
+  await store.set('atlas:es:srs', S.srs);
+  await store.set('atlas:es:lastSession', {at:Date.now(), mins, avgM, solid});
+  const lessons = (await store.get('atlas:es:lessons')) || {};
+  lessons['001'] = {done:true, at:Date.now()};
+  await store.set('atlas:es:lessons', lessons);
+  await markDayDone();
+
+  render(`
+    <h1>Lesson complete.</h1>
+    <div class="unlock">
+      <div class="k">New skill</div>
+      <div class="v">You can now order a beer, pay, and find the bathroom.</div>
+    </div>
+    <div style="margin-top:20px">
+      <div class="stat"><span>Phrases you knew straight away</span><b>${solid} of ${RECALL.length}</b></div>
+      <div class="stat"><span>Speaking: came through clearly</span><b>${clearSpeak} of ${MIRROR.length}</b></div>
+      <div class="stat"><span>Time</span><b>${mins} min</b></div>
+    </div>
+
+    <h2 style="margin-top:30px;font-size:20px">What happens next</h2>
+    <ol class="dim" style="padding-left:18px;line-height:1.8;margin:0">
+      <li>Tomorrow, open Atlas. You'll see a short review of ${tmrN} phrase${tmrN===1?'':'s'} (about ${tmrM} min).</li>
+      <li>Do the review first. It's what makes these words stick.</li>
+      <li>Then practise this lesson again. Lesson 002 is coming soon.</li>
+    </ol>
+
+    <h2 style="margin-top:26px;font-size:18px">Coming back for review</h2>
+    <div class="frame" style="padding:6px 18px;margin-top:12px">
+      ${items.slice(0,7).map(([k,v])=>`
+        <div class="line" style="cursor:default">
+          <div class="txt"><div class="l-es" style="font-size:17px">${k.slice(2)}</div></div>
+          <div class="who" style="width:auto;padding-top:7px">${dueLabel(v.due)}</div>
+        </div>`).join('')}
+    </div>
+
+    <button class="cta" id="backHome" style="margin-top:24px">Back to Today</button>
+  `);
+  document.getElementById('backHome').onclick = ()=> screenHome();
+}
+
+/* ============================================================
+   STANDALONE REVIEW (from the Home screen's review card)
+   ============================================================ */
+let reviewIdx = 0, reviewList = [];
+function screenReview(phrases){
+  setRailVisible(false);
+  setSessionMode(true);
+  reviewList = phrases.slice(0,20);
+  reviewIdx = 0;
+  paintReview();
+}
+function paintReview(){
+  const es = reviewList[reviewIdx];
+  const en = lookupEnglish(es);
+  render(`
+    <div class="eyebrow">Review · ${reviewIdx+1} of ${reviewList.length}</div>
+    <h2 style="font-size:22px;color:#B9C2CC;font-family:var(--sans);font-weight:300">Say this in Spanish</h2>
+    <div class="frame">
+      <div class="prompt">${en}</div>
+      <div class="answer" id="ans">· · ·</div>
+    </div>
+    <button class="cta" id="reveal">Show answer</button>
+    <div id="rate"></div>
+    <div class="note">Say it in Spanish out loud first, then tap "Show answer".</div>
+  `);
+  document.getElementById('reveal').onclick = ()=>{
+    document.getElementById('ans').textContent = es;
+    say(es);
+    document.getElementById('reveal').style.display='none';
+    document.getElementById('rate').innerHTML = `
+      <div class="row">
+        <button class="cta ghost" data-q="0">Didn't know it</button>
+        <button class="cta ghost" data-q="1">Hard</button>
+        <button class="cta" data-q="2">Knew it</button>
+      </div>`;
+    document.querySelectorAll('#rate button').forEach(b=>{
+      b.onclick = async ()=>{
+        const q = +b.dataset.q;
+        if(S.srs['r:'+es]) schedule('r:'+es, q);
+        if(S.srs['m:'+es]) schedule('m:'+es, q);
+        reviewIdx++;
+        if(reviewIdx < reviewList.length) paintReview(); else await finishReview();
+      };
+    });
+  };
+}
+async function finishReview(){
+  await store.set('atlas:es:srs', S.srs);
+  await markDayDone();
+  reviewDoneNote = true;
+  screenHome();
+}
+
+/* ============================================================
+   AUDIO DRILL — hands-free, audio-only practice.
+   Standalone: builds its own item list from LEARN + FRAMES x
+   slots + RECALL, plays a graduated-interval drill loop by
+   voice only, never touches S.srs. See AGENTS.md for the rules
+   this has to follow (single file, no new Spanish text, etc).
+   Internal names keep the "pista" prefix from an earlier build;
+   that word is never shown to the user, only "Audio drill" is.
+   ============================================================ */
+const PISTA_INTERVALS = [5, 25, 120, 600]; // seconds after previous appearance
+const PISTA_LIMIT_SEC = 900; // 15 minutes
+
+let pista = null;
+let pistaTimer = null;
+let wakeLock = null;
+
+function pistaWordCount(es){ return es.trim().split(/\s+/).length; }
+
+function pistaBuildUpChunks(es){
+  const words = es.trim().split(/\s+/);
+  const chunks = [];
+  for(let k=1;k<=words.length;k++) chunks.push(words.slice(words.length-k).join(' '));
+  return chunks;
+}
+
+function pistaIsDue(es){
+  const now = Date.now();
+  const r = S.srs['r:'+es];
+  const m = S.srs['m:'+es];
+  return (!!r && r.due<=now) || (!!m && m.due<=now);
+}
+
+function pistaBuildItems(){
+  const list = [];
+  LEARN.forEach(l=> list.push({en:l.en, es:l.es}));
+  FRAMES.forEach(f=>{
+    f.slots.forEach(s=>{
+      list.push({en:f.en.replace('___', s.en), es:f.es.replace('___', s.es)});
+    });
+  });
+  RECALL.forEach(r=> list.push({en:r.en, es:r.es}));
+  const seen = new Set(), unique = [];
+  list.forEach(it=>{ if(!seen.has(it.es)){ seen.add(it.es); unique.push(it); } });
+  return unique;
+}
+
+function pistaBuildSession(){
+  const items = pistaBuildItems();
+  const due = items.filter(it=>pistaIsDue(it.es));
+  const rest = items.filter(it=>!pistaIsDue(it.es));
+  return due.concat(rest).map((it,i)=>({
+    id:'p'+i, en:it.en, es:it.es, wordCount:pistaWordCount(it.es),
+    introduced:false, buildUpDone:false, reps:0, nextDueSec:0, finished:false
+  }));
+}
+
+function pistaElapsedSec(){
+  return (Date.now() - pista.startMs - pista.pausedAccumMs) / 1000;
+}
+
+async function pistaWait(seconds){
+  const ms = seconds*1000;
+  let elapsed = 0;
+  while(elapsed < ms){
+    if(pista.stopped || pista.paused) return;
+    const chunk = Math.min(100, ms-elapsed);
+    await new Promise(r=>setTimeout(r, chunk));
+    elapsed += chunk;
+  }
+}
+
+function pistaWaitForResume(){
+  if(!pista.paused && !pista.stopped) return Promise.resolve();
+  return new Promise(res=>{ pista.resumeResolve = res; });
+}
+
+async function pistaBackwardBuildUp(item){
+  for(const chunk of pistaBuildUpChunks(item.es)){
+    if(pista.stopped || pista.paused) return false;
+    await say(chunk, 0.75);
+    if(pista.stopped || pista.paused) return false;
+    await pistaWait(1.5 + 0.5*pistaWordCount(chunk));
+  }
+  return true;
+}
+
+async function pistaPlayItem(item){
+  if(item.wordCount>=3 && !item.buildUpDone){
+    const ok = await pistaBackwardBuildUp(item);
+    if(pista.stopped) return 'stopped';
+    if(!ok) return 'paused';
+    item.buildUpDone = true;
+  }
+  if(pista.stopped) return 'stopped';
+  if(pista.paused) return 'paused';
+
+  await sayEn(`How do you say: ${item.en}?`);
+  if(pista.stopped) return 'stopped';
+  if(pista.paused) return 'paused';
+
+  await pistaWait(2.5 + 0.6*item.wordCount);
+  if(pista.stopped) return 'stopped';
+  if(pista.paused) return 'paused';
+
+  await say(item.es, 0.8);
+  if(pista.stopped) return 'stopped';
+  if(pista.paused) return 'paused';
+
+  await pistaWait(0.5);
+  if(pista.stopped) return 'stopped';
+  if(pista.paused) return 'paused';
+
+  await say(item.es, 0.7);
+  if(pista.stopped) return 'stopped';
+  if(pista.paused) return 'paused';
+
+  await pistaWait(0.5);
+  return 'done';
+}
+
+function pistaAfterDrill(item, nowSec){
+  item.reps++;
+  if(item.reps <= PISTA_INTERVALS.length) item.nextDueSec = nowSec + PISTA_INTERVALS[item.reps-1];
+  else item.finished = true;
+}
+
+function pistaPickCandidate(elapsed){
+  const due = pista.items.filter(it=>it.introduced && !it.finished && it.nextDueSec<=elapsed);
+  if(due.length) return due.reduce((a,b)=> a.nextDueSec<b.nextDueSec ? a : b);
+  return pista.items.find(it=>!it.introduced) || null;
+}
+
+async function pistaRun(){
+  while(true){
+    if(pista.stopped) break;
+    if(pista.paused) await pistaWaitForResume();
+    if(pista.stopped) break;
+
+    const elapsed = pistaElapsedSec();
+    if(elapsed >= PISTA_LIMIT_SEC) break;
+    if(pista.items.every(it=>it.finished)) break;
+
+    const candidate = pistaPickCandidate(elapsed);
+    if(!candidate){
+      const upcoming = pista.items.filter(it=>it.introduced && !it.finished);
+      if(!upcoming.length) break;
+      const soonest = upcoming.reduce((a,b)=> a.nextDueSec<b.nextDueSec ? a : b);
+      await pistaWait(Math.max(0.2, soonest.nextDueSec - pistaElapsedSec()));
+      continue;
+    }
+
+    pistaShowCurrent(candidate);
+    let result = await pistaPlayItem(candidate);
+    while(result==='paused'){
+      await pistaWaitForResume();
+      if(pista.stopped){ result='stopped'; break; }
+      result = await pistaPlayItem(candidate);
+    }
+    if(result==='stopped' || pista.stopped) break;
+
+    candidate.introduced = true;
+    pistaAfterDrill(candidate, pistaElapsedSec());
+    pistaRenderClock();
+  }
+  await pistaFinish();
+}
+
+function pistaToggle(){
+  if(!pista || pista.stopped) return;
+  const btn = document.getElementById('pauseBtn');
+  if(pista.paused){
+    pista.paused = false;
+    pista.pausedAccumMs += Date.now() - pista.pauseStartedAt;
+    if(btn) btn.textContent = 'Pause';
+    if(pista.resumeResolve){ const r=pista.resumeResolve; pista.resumeResolve=null; r(); }
+  } else {
+    pista.paused = true;
+    pista.pauseStartedAt = Date.now();
+    speechSynthesis.cancel();
+    if(btn) btn.textContent = 'Resume';
+  }
+}
+
+function pistaStop(){
+  if(!pista || pista.stopped) return;
+  pista.stopped = true;
+  speechSynthesis.cancel();
+  if(pista.resumeResolve){ const r=pista.resumeResolve; pista.resumeResolve=null; r(); }
+}
+
+async function pistaRequestWakeLock(){
+  try{
+    if('wakeLock' in navigator) wakeLock = await navigator.wakeLock.request('screen');
+  }catch(e){ wakeLock = null; }
+}
+function pistaReleaseWakeLock(){
+  try{ wakeLock && wakeLock.release(); }catch(e){}
+  wakeLock = null;
+}
+document.addEventListener('visibilitychange', ()=>{
+  if(document.visibilityState==='visible' && pista && !pista.stopped) pistaRequestWakeLock();
+});
+
+function renderPista(html){
+  stageEl.innerHTML = `<div class="panel">${html}</div>`;
+  window.scrollTo({top:0,behavior:'instant'});
+}
+
+function screenPistaStart(){
+  setRailVisible(false);
+  setSessionMode(true);
+  const wakeSupported = 'wakeLock' in navigator;
+  renderPista(`
+    <div class="eyebrow">Audio drill</div>
+    <h1>Practice out loud, hands-free</h1>
+    <p>Listen to the prompt, say the Spanish out loud, then hear the answer twice. No taps needed once you start — just listen and speak.</p>
+    <p class="dim">Runs up to 15 minutes. Phrases you already know come back on a short delay, then a longer one, so you keep saying them until they stick.</p>
+    <button class="cta" id="pistaBegin">Start</button>
+    <div class="note">Keep the screen on. Audio stops if your phone locks.</div>
+    ${wakeSupported ? '' : '<div class="note">Keep your screen on manually.</div>'}
+  `);
+  document.getElementById('pistaBegin').onclick = ()=> pistaStart();
+}
+
+async function pistaStart(){
+  await pistaRequestWakeLock();
+  pista = {
+    items: pistaBuildSession(),
+    startMs: Date.now(),
+    pausedAccumMs: 0,
+    paused: false,
+    pauseStartedAt: 0,
+    stopped: false,
+    resumeResolve: null
+  };
+  screenPistaRunning();
+  pistaRun();
+}
+
+function screenPistaRunning(){
+  setSessionMode(true);
+  renderPista(`
+    <div class="eyebrow">Audio drill</div>
+    <p class="dim">Listen and say each phrase out loud. Tap "Pause" anytime.</p>
+    <div class="frame">
+      <div class="es" id="pistaEs">· · ·</div>
+    </div>
+    <div class="dim" id="pistaClock" style="font-family:var(--mono);margin-top:14px">00:00</div>
+    <div class="row">
+      <button class="cta" id="pauseBtn">Pause</button>
+      <button class="cta ghost" id="stopBtn">Finish</button>
+    </div>
+  `);
+  document.getElementById('pauseBtn').onclick = pistaToggle;
+  document.getElementById('stopBtn').onclick = pistaStop;
+  if(pistaTimer) clearInterval(pistaTimer);
+  pistaTimer = setInterval(pistaRenderClock, 500);
+  pistaRenderClock();
+}
+
+function pistaShowCurrent(item){
+  const el = document.getElementById('pistaEs');
+  if(el) el.textContent = item.es;
+}
+
+function pistaRenderClock(){
+  const el = document.getElementById('pistaClock');
+  if(!el || !pista) return;
+  const s = Math.max(0, Math.floor(pistaElapsedSec()));
+  const m = Math.floor(s/60), ss = s%60;
+  el.textContent = String(m).padStart(2,'0')+':'+String(ss).padStart(2,'0');
+}
+
+async function pistaFinish(){
+  if(pistaTimer) clearInterval(pistaTimer);
+  pistaReleaseWakeLock();
+  const mins = Math.max(1, Math.round(pistaElapsedSec()/60));
+  const itemsHeard = pista.items.filter(it=>it.introduced).length;
+  await store.set('atlas:es:lastSession', {at:Date.now(), mins, avgM:null, solid:null, mode:'drill'});
+  await markDayDone();
+  screenPistaEnd(mins, itemsHeard);
+}
+
+function screenPistaEnd(mins, itemsHeard){
+  setSessionMode(false);
+  renderPista(`
+    <div class="eyebrow">Audio drill</div>
+    <h1>Done.</h1>
+    <div style="margin-top:20px">
+      <div class="stat"><span>Minutes practised</span><b>${mins}</b></div>
+      <div class="stat"><span>Phrases heard</span><b>${itemsHeard}</b></div>
+    </div>
+    <button class="cta" id="pistaHome" style="margin-top:24px">Back to Today</button>
+  `);
+  document.getElementById('pistaHome').onclick = ()=> screenHome();
+}
+
+/* ---------- BOOT ---------- */
+(async function boot(){
+  const saved = await store.get('atlas:es:srs');
+  if(saved){
+    S.srs = saved;
+    pruneStaleSrs();
+    await store.set('atlas:es:srs', S.srs);
+  }
+  const last = await store.get('atlas:es:lastSession');
+  if(last){
+    const d = Math.round((Date.now()-last.at)/864e5);
+    const metaEl = document.getElementById('metaLine');
+    if(metaEl) metaEl.textContent = 'last ' + (d<1?'today':d+'d ago');
+  }
+  screenHome();
+})();
+</script>
+
+<!--
+============================================================
+OLD SPAIN-SPANISH CONTENT, NOT IN USE
+Kept for reference; will be rewritten later as Lesson 002+.
+Superseded by the Mexican Spanish, beginner-first content above.
+============================================================
+
+const FRAMES_OLD = [
+  { id:'f1', es:'Quiero ___, por favor.', en:'I want ___, please.',
+    slots:[
+      {es:'un café', en:'a coffee'},
+      {es:'una cerveza', en:'a beer'},
+      {es:'agua', en:'water'},
+      {es:'la cuenta', en:'the bill'}
+    ]},
+  { id:'f2', es:'¿Tiene ___?', en:'Do you have ___?',
+    slots:[
+      {es:'café con leche', en:'coffee with milk'},
+      {es:'algo vegetariano', en:'something vegetarian'},
+      {es:'wifi', en:'wifi'},
+      {es:'vino tinto', en:'red wine'}
+    ]},
+  { id:'f3', es:'Para mí, ___.', en:'For me, ___.',
+    slots:[
+      {es:'una cerveza', en:'a beer'},
+      {es:'lo mismo', en:'the same'},
+      {es:'nada, gracias', en:'nothing, thanks'}
+    ]},
+  { id:'f4', es:'¿Dónde está ___?', en:'Where is ___?',
+    slots:[
+      {es:'el baño', en:'the bathroom'},
+      {es:'la salida', en:'the exit'},
+      {es:'la estación', en:'the station'}
+    ]}
+];
+
+const ESSENTIALS_OLD = [
+  {es:'¿Cuánto cuesta?', en:'How much is it?'},
+  {es:'Perdone', en:'Excuse me'},
+  {es:'¿Qué es esto?', en:'What is this?'},
+  {es:'Sí, claro', en:'Yes, of course'},
+  {es:'No, gracias', en:'No, thanks'}
+];
+
+const SCENE_OLD = [
+  {who:'—',   es:'Hola, buenas.',                    en:'Hi, good evening.'},
+  {who:'You', es:'Hola. Una cerveza, por favor.',    en:'Hi. A beer, please.'},
+  {who:'—',   es:'¿Grande o pequeña?',               en:'Large or small?'},
+  {who:'You', es:'Una cerveza. Y agua también.',     en:'A beer. And water too.'},
+  {who:'—',   es:'Muy bien. ¿Algo de comer?',        en:'Very good. Something to eat?'},
+  {who:'You', es:'¿Tiene algo vegetariano?',         en:'Do you have something vegetarian?'},
+  {who:'—',   es:'Sí, claro. Tortilla.',             en:'Yes, of course. Tortilla.'},
+  {who:'You', es:'Perfecto. ¿Cuánto cuesta?',        en:'Perfect. How much is it?'},
+  {who:'—',   es:'Ochenta pesos.',                   en:'Eighty pesos.'},
+  {who:'You', es:'Gracias. ¿Dónde está el baño?',    en:'Thanks. Where is the bathroom?'}
+];
+
+const RECALL_OLD = [
+  {en:'A beer, please.',              es:'Una cerveza, por favor.'},
+  {en:'Do you have red wine?',        es:'¿Tiene vino tinto?'},
+  {en:'For me, the same.',            es:'Para mí, lo mismo.'},
+  {en:'Where is the bathroom?',       es:'¿Dónde está el baño?'},
+  {en:'How much is it?',              es:'¿Cuánto cuesta?'},
+  {en:'I want the bill, please.',     es:'Quiero la cuenta, por favor.'}
+];
+
+const MIRROR_OLD = [
+  {es:'Una cerveza, por favor.', en:'A beer, please.'},
+  {es:'¿Tiene algo vegetariano?', en:'Do you have something vegetarian?'},
+  {es:'¿Dónde está el baño?', en:'Where is the bathroom?'},
+  {es:'Para mí, lo mismo.', en:'For me, the same.'}
+];
+============================================================
+-->
